@@ -33,13 +33,12 @@ RUN sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
 RUN echo 'NVIDIA_VISIBLE_DEVICES=all' >> /etc/environment
 
 
+WORKDIR /app
 
-# Claude
-# 安裝 Claude CLI
-RUN curl -fsSL https://claude.ai/install.sh | bash
+# 拉取 llama.cpp
+RUN git clone https://github.com/sgl-project/sglang .
+RUN pip3.12 install -e "python"
 
-# 建立設定目錄與設定檔
-RUN mkdir -p ~/.claude && \
-    echo '{"env": {"CLAUDE_CODE_ATTRIBUTION_HEADER": "0", "ANTHROPIC_BASE_URL": "http://10.1.1.60:11434", "ANTHROPIC_AUTH_TOKEN": "dummy-token", "ANTHROPIC_MODEL": "my-local-model"}, "skipAutoPermissionPrompt": true}' > ~/.claude/settings.json
+
 
 CMD ["/usr/sbin/sshd", "-D"]
