@@ -35,10 +35,32 @@ RUN echo 'NVIDIA_VISIBLE_DEVICES=all' >> /etc/environment
 
 WORKDIR /app
 
-# 拉取 llama.cpp
 RUN git clone https://github.com/sgl-project/sglang .
 RUN pip3.12 install -e "python"
 
+# install opencode
+RUN curl -fsSL https://opencode.ai/install | bash
+RUN mkdir -p /root/.config/opencode/
+RUN cat <<'EOF' > /root/.config/opencode/opencode.json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "sglang-direct": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "SGLang Direct Engine",
+      "options": {
+        "baseURL": "http://10.1.1.60:11434/v1",
+        "apiKey": "not-needed-for-sglang"
+      },
+      "models": {
+        "my-local-model": {
+          "name": "Qwen3 Coder Next (64K Direct)"
+        }
+      }
+    }
+  }
+}
+EOF
 
 
 CMD ["/usr/sbin/sshd", "-D"]

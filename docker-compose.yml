@@ -20,5 +20,6 @@ services:
       - ./cache:/root/.cache:rw
     ports:
       - "11434:11434"
-    entrypoint: >
-      python3.12 -m sglang.launch_server     --model-path /root/.cache/huggingface/hub/models--Qwen--Qwen3-Coder-Next-FP8/snapshots/da6e2ed27304dd39abadd9c82ef50e8de67bdd4c     --host 0.0.0.0     --port 11434     --mem-fraction-static 0.8     --tool-call-parser qwen3_coder     --context-length 131072     --served-model-name my-local-model
+      - "222:22"
+    #entrypoint: >
+      #python3.12 -m sglang.launch_server     --model-path /root/.cache/huggingface/hub/models--Qwen--Qwen3-Coder-Next-FP8/snapshots/da6e2ed27304dd39abadd9c82ef50e8de67bdd4c     --host 0.0.0.0     --port 11434     --mem-fraction-static 0.8     --tool-call-parser qwen3_coder     --context-length 131072     --served-model-name my-local-model
