@@ -66,6 +66,7 @@ RUN cat <<'EOF' > /root/.config/opencode/opencode.json
 EOF
 
 RUN mkdir -p /root/.config/opencode/agents
+RUN mkdir -p /root/.claude/skills
 RUN git clone https://github.com/Weizhena/Deep-Research-skills
 RUN cd /Deep-Research-skills && cp agents/web-search-opencode.md /root/.config/opencode/agents/web-search.md
 RUN cd /Deep-Research-skills && cp -r agents/web-search-modules /root/.config/opencode/agents/
