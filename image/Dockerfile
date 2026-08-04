@@ -38,6 +38,9 @@ WORKDIR /app
 RUN git clone https://github.com/sgl-project/sglang .
 RUN pip3.12 install -e "python"
 
+
+
+WORKDIR /
 # install opencode
 RUN curl -fsSL https://opencode.ai/install | bash
 RUN mkdir -p /root/.config/opencode/
@@ -62,5 +65,10 @@ RUN cat <<'EOF' > /root/.config/opencode/opencode.json
 }
 EOF
 
+RUN mkdir -p /root/.config/opencode/agents
+RUN git clone https://github.com/Weizhena/Deep-Research-skills
+RUN cd /Deep-Research-skills && cp agents/web-search-opencode.md /root/.config/opencode/agents/web-search.md
+RUN cd /Deep-Research-skills && cp -r agents/web-search-modules /root/.config/opencode/agents/
+RUN cd /Deep-Research-skills && cp -r skills/research-en/* /root/.claude/skills/
 
 CMD ["/usr/sbin/sshd", "-D"]
