@@ -35,7 +35,7 @@ RUN echo 'NVIDIA_VISIBLE_DEVICES=all' >> /etc/environment
 
 WORKDIR /app
 
-RUN git clone https://github.com/sgl-project/sglang .
+RUN git clone -b main https://github.com/sgl-project/sglang .
 RUN pip3.12 install -e "python"
 
 
@@ -57,7 +57,10 @@ RUN cat <<'EOF' > /root/.config/opencode/opencode.json
       },
       "models": {
         "my-local-model": {
-          "name": "Qwen3 Coder Next (64K Direct)"
+          "name": "Qwen3 Coder Next (64K Direct)",
+          "options": {
+            "temperature": 0
+          }
         }
       }
     }

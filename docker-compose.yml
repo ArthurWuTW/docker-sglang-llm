@@ -8,19 +8,28 @@ services:
         VSCODE_COMMIT_ID: ${VSCODE_COMMIT_ID}
     deploy:
       resources:
+        limits:
+          cpus: '15'
         reservations:
           devices:
             - driver: nvidia
               count: all
               capabilities: [gpu]
     environment:
-      - OPENCODE_ENABLE_EXA=1
       - NVIDIA_VISIBLE_DEVICES=all
       - HF_TOKEN=${TOKEN}
+      - MKL_NUM_THREADS=15
+      - OPENBLAS_NUM_THREADS=15
+      - TORCH_NUM_THREADS=4
+      - MAX_JOBS=4                      # 限制 nvcc/cicc 最大同時編譯任務數為 4
+      - TRITON_MAX_CPU_THREADS=4        # 限制 Triton JIT 編譯線程數
+      - OMP_NUM_THREADS=4               # 限制 OpenMP 線程數
     volumes:
       - ./cache:/root/.cache:rw
     ports:
       - "11435:11435"
       - "222:22"
-    #entrypoint: >
-      #python3.12 -m sglang.launch_server     --model-path /root/.cache/huggingface/hub/models--Qwen--Qwen3-Coder-Next-FP8/snapshots/da6e2ed27304dd39abadd9c82ef50e8de67bdd4c     --host 0.0.0.0     --port 11434     --mem-fraction-static 0.8     --tool-call-parser qwen3_coder     --context-length 131072     --served-model-name my-local-model
+
+#   # DFLASH
+#   entrypoint: >
+#     sglang serve   --model-path /root/.cache/huggingface/hub/models--Qwen--Qwen3.8-27B-FP8/snapshots/017b9c7af6b5689d5dd426a76e0bc077eb5ca20a   --host 0.0.0.0   --port 11434   --mem-fraction-static 0.85  --disable-prefill-cuda-graph   --context-length 131072   --tool-call-parser qwen3_coder   --attention-backend flashinfer  --speculative-algorithm DFLASH --speculative-draft-model-path /root/.cache/huggingface/hub/models--incoai--Qwen3.8-27B-DFlash2/snapshots/dedf8df68adfb1afeaf7b7480c0a0243108177b4 --speculative-num-draft-tokens 8      --served-model-name my-local-model
