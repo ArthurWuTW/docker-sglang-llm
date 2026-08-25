@@ -31,5 +31,4 @@ services:
       - "222:22"
 
 #   # DFLASH
-#   entrypoint: >
-#     sglang serve   --model-path /root/.cache/huggingface/hub/models--Qwen--Qwen3.8-27B-FP8/snapshots/017b9c7af6b5689d5dd426a76e0bc077eb5ca20a   --host 0.0.0.0   --port 11434   --mem-fraction-static 0.85  --disable-prefill-cuda-graph   --context-length 131072   --tool-call-parser qwen3_coder   --attention-backend flashinfer  --speculative-algorithm DFLASH --speculative-draft-model-path /root/.cache/huggingface/hub/models--incoai--Qwen3.8-27B-DFlash2/snapshots/dedf8df68adfb1afeaf7b7480c0a0243108177b4 --speculative-num-draft-tokens 8      --served-model-name my-local-model
+#   sglang serve   --model-path /root/.cache/huggingface/hub/models--RadixArk--Qwen3.8-27B-NVFP4-BF16-LMHead/snapshots/009632fef96dd349150baa780c984e62e70e91fe   --host 0.0.0.0   --port 11434   --mem-fraction-static 0.8  --disable-prefill-cuda-graph   --context-length 262144  --tool-call-parser qwen3_coder   --attention-backend flashinfer  --speculative-algorithm DFLASH --speculative-draft-model-path /root/.cache/huggingface/hub/models--incoai--Qwen3.8-27B-DFlash2/snapshots/dedf8df68adfb1afeaf7b7480c0a0243108177b4 --speculative-num-draft-tokens 8   --reasoning-parser qwen3   --served-model-name my-local-model
