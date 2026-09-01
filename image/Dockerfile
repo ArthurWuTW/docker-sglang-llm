@@ -3,7 +3,6 @@ FROM nvidia/cuda:13.0.1-cudnn-devel-rockylinux9
 ARG HF_TOKEN
 ARG VSCODE_COMMIT_ID
 
-#vscode server
 RUN yum install -y procps-ng tar gzip curl --allowerasing
 RUN yum install -y gcc gcc-c++ make cmake
 RUN yum install -y ncurses git
@@ -74,5 +73,13 @@ RUN git clone https://github.com/Weizhena/Deep-Research-skills
 RUN cd /Deep-Research-skills && cp agents/web-search-opencode.md /root/.config/opencode/agents/web-search.md
 RUN cd /Deep-Research-skills && cp -r agents/web-search-modules /root/.config/opencode/agents/
 RUN cd /Deep-Research-skills && cp -r skills/research-en/* /root/.claude/skills/
+
+
+# vscode server
+RUN mkdir -p /root/.vscode-server/bin/${VSCODE_COMMIT_ID}
+RUN curl -L https://update.code.visualstudio.com/commit:${VSCODE_COMMIT_ID}/server-linux-x64/stable \
+    | tar --strip-components=1 -xz -C /root/.vscode-server/bin/${VSCODE_COMMIT_ID}
+
+
 
 CMD ["/usr/sbin/sshd", "-D"]
