@@ -7,7 +7,7 @@ ARG VSCODE_COMMIT_ID
 RUN yum install -y procps-ng tar gzip curl --allowerasing
 RUN yum install -y gcc gcc-c++ make cmake
 RUN yum install -y ncurses git
-RUN yum install -y python3.12 python3.12-pip python3.12-devel python3.12-wheel
+RUN yum install -y python3.12 python3.12-pip python3.12-devel
 RUN yum install -y libnccl libnccl-devel libnccl-static
 RUN yum install -y epel-release
 RUN yum install -y ccache
@@ -46,12 +46,13 @@ ENV PYO3_PYTHON=/usr/bin/python3.12
 ENV PYTHONNOUSERSITE=1
 ENV PYTHONPATH=""
 
-RUN git clone -b main https://github.com/sgl-project/sglang .
+RUN git clone -b v0.5.19 https://github.com/sgl-project/sglang .
 # 補複製 README 與 LICENSE 至 python 目錄，避免 setuptools 找不到文件的警告/錯誤
 RUN cp README.md LICENSE python/ 2>/dev/null || true
 
 RUN python3.12 -m pip install --upgrade pip setuptools wheel && \
     python3.12 -m pip install -e "python"
+
 
 WORKDIR /
 # install opencode
