@@ -42,16 +42,12 @@ RUN ln -sf /usr/bin/python3.12 /usr/bin/python3 && \
 ENV PYTHON=/usr/bin/python3.12
 ENV PYO3_PYTHON=/usr/bin/python3.12
 
-
-ENV PYTHONNOUSERSITE=1
-ENV PYTHONPATH=""
-
-RUN git clone -b v0.5.19 https://github.com/sgl-project/sglang .
+RUN git clone -b v0.5.16 https://github.com/sgl-project/sglang .
 # 補複製 README 與 LICENSE 至 python 目錄，避免 setuptools 找不到文件的警告/錯誤
 RUN cp README.md LICENSE python/ 2>/dev/null || true
 
-RUN python3.12 -m pip install --upgrade pip setuptools wheel && \
-    python3.12 -m pip install -e "python"
+RUN python3.12 -m pip install --upgrade pip setuptools wheel
+RUN pip3.12 install -e "python"
 
 
 WORKDIR /
