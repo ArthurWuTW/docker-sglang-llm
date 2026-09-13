@@ -21,7 +21,7 @@ services:
       - MKL_NUM_THREADS=15
       - OPENBLAS_NUM_THREADS=15
       - TORCH_NUM_THREADS=4
-      - MAX_JOBS=4                      # 限制 nvcc/cicc 最大同時編譯任務數為 4
+      - MAX_JOBS=1                      # 限制 nvcc/cicc 最大同時編譯任務數
       - TRITON_MAX_CPU_THREADS=4        # 限制 Triton JIT 編譯線程數
       - OMP_NUM_THREADS=4               # 限制 OpenMP 線程數
     volumes:
@@ -29,6 +29,5 @@ services:
     ports:
       - "11434:11434"
       - "222:22"
-
-#   # DFLASH
-#   sglang serve   --model-path /root/.cache/huggingface/hub/models--RadixArk--Qwen3.8-27B-NVFP4-BF16-LMHead/snapshots/009632fef96dd349150baa780c984e62e70e91fe   --host 0.0.0.0   --port 11434   --mem-fraction-static 0.8  --disable-prefill-cuda-graph   --context-length 262144  --tool-call-parser qwen3_coder   --attention-backend flashinfer  --speculative-algorithm DFLASH --speculative-draft-model-path /root/.cache/huggingface/hub/models--incoai--Qwen3.8-27B-DFlash2/snapshots/dedf8df68adfb1afeaf7b7480c0a0243108177b4 --speculative-num-draft-tokens 8   --reasoning-parser qwen3   --served-model-name my-local-model
+    entrypoint: >
+      sglang serve   --model-path /root/.cache/huggingface/hub/models--RadixArk--Qwen3.8-Flash-Next-NVFP4/snapshots/7b719225242aacd3dbd3f9407468c2ee9a9d2594   --tp 1   --quantization modelopt_fp4   --fp4-gemm-backend flashinfer_cutlass   --page-size 64   --chunked-prefill-size 4096   --context-length 262144   --speculative-algorithm NEXTN   --speculative-num-steps 3   --speculative-eagle-topk 1   --speculative-num-draft-tokens 4   --max-running-requests 8   --max-mamba-cache-size 40   --tool-call-parser qwen3_coder   --reasoning-parser qwen3   --mem-fraction-static 0.85   --host 0.0.0.0   --port 11434   --ple-offload-embedding   --ple-offload-backend file   --ple-offload-dir /tmp/ple
