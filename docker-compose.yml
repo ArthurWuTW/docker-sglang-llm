@@ -27,7 +27,7 @@ services:
     volumes:
       - ./cache:/root/.cache:rw
     ports:
-      - "11435:11435"
+      - "11434:11434"
       - "222:22"
 
 #   # DFLASH
